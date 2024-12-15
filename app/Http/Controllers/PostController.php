@@ -2,25 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 
 class PostController
 {
     public function index()
     {
-        if (!Gate::allows('view')) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        $response = Gate::inspect('view-post');
 
-        if (Auth::check()) {
-            $user = Auth::user();
-
-            return response()->json([
-                'title' => 'My first post',
-                'content' => 'This is my first post.',
-                'user' => $user,
-            ]);
+        if ($response->allowed()) {
+            // The action is authorized...
+        } else {
+            return response()->json(['message' => $response->message()], 403);
         }
 
         return response()->json([

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,5 +20,13 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // $exceptions->render(function (Throwable $exception) {
+        //     if ($exception instanceof AuthorizationException) {
+        //         return response()->json([
+        //             'error' => 'You do not have permission to perform this action.'
+        //         ], 403);
+        //     }
+
+        //     return $exception;
+        // });
     })->create();
