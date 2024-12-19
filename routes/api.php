@@ -12,8 +12,9 @@ Route::get('users', function () {
     return response()->json(User::all());
 });
 
+Route::get('posts', [PostController::class, 'index']);
+Route::get('posts/{post}', [PostController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('posts', [PostController::class, 'index']);
 
     // Route::put('posts/{post}', [PostController::class, 'update'])
     //     ->middleware('can:update,post');

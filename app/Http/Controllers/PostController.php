@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\PostCollection;
+use App\Http\Resources\PostResource;
+use App\Models\Post;
 
 class PostController
 {
     public function index()
     {
-        $response = Gate::inspect('view-post');
+        $posts = Post::paginate(5);
 
-        if ($response->allowed()) {
-            // The action is authorized...
-        } else {
-            return response()->json(['message' => $response->message()], 403);
-        }
+        return PostCollection::make($posts);
+    }
 
-        return response()->json([
-            'title' => 'My first post 123',
-        ]);
+    public function show($id)
+    {
+        $post = Post::findOrFail($id);
+
+        return PostResource::make($post);
     }
 }
